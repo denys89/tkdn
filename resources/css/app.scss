@@ -1,0 +1,32 @@
+// Bootstrap 5
+@import "bootstrap/scss/bootstrap";
+
+// Custom styles
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+// Custom variables
+:root {
+    --bs-primary: #0d6efd;
+    --bs-secondary: #6c757d;
+    --bs-success: #198754;
+    --bs-info: #0dcaf0;
+    --bs-warning: #ffc107;
+    --bs-danger: #dc3545;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+}
+
+// Custom components
+.navbar-brand {
+    font-weight: bold;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.btn {
+    border-radius: 0.375rem;
+} 

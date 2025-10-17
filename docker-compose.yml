@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  laravel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: staging_tkdn
+    volumes:
+      - .:/var/www
+      - /var/www/vendor
+    ports:
+      - "80:8000"

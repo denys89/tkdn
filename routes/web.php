@@ -57,6 +57,7 @@ Route::post('service/{service}/reject', [App\Http\Controllers\ServiceController:
 Route::post('service/{service}/generate', [App\Http\Controllers\ServiceController::class, 'generate'])->name('service.generate')->middleware('service.cache');
 Route::post('service/{service}/generate-form/{formNumber}', [App\Http\Controllers\ServiceController::class, 'generateForm'])->name('service.generate-form')->middleware('service.cache');
 Route::get('service/{service}/export/excel/{classification}', [App\Http\Controllers\ServiceController::class, 'exportExcel'])->name('service.export.excel');
+Route::get('service/{service}/export/pdf/{classification}', [App\Http\Controllers\ServiceController::class, 'exportPdf'])->name('service.export.pdf');
 Route::get('service/{service}/debug-hpp-items', [App\Http\Controllers\ServiceController::class, 'debugHppItems'])->name('service.debug-hpp-items');
 Route::post('service/{service}/regenerate-form-34', [App\Http\Controllers\ServiceController::class, 'regenerateForm34'])->name('service.regenerate-form-34')->middleware('service.cache');
 
@@ -72,6 +73,10 @@ Route::post('hpp/{hpp}/approve', [App\Http\Controllers\HppController::class, 'ap
 Route::post('hpp/{hpp}/reject', [App\Http\Controllers\HppController::class, 'reject'])->name('hpp.reject');
 Route::post('hpp/{hpp}/comment', [App\Http\Controllers\HppController::class, 'addComment'])->name('hpp.comment');
 Route::post('hpp/{hpp}/start-review', [App\Http\Controllers\HppController::class, 'startReview'])->name('hpp.start-review');
+
+// Export routes for HPP (Excel & PDF)
+Route::get('hpp/{hpp}/export/excel', [App\Http\Controllers\HppController::class, 'exportExcel'])->name('hpp.export.excel');
+Route::get('hpp/{hpp}/export/pdf', [App\Http\Controllers\HppController::class, 'exportPdf'])->name('hpp.export.pdf');
 
 Route::resource('hpp', App\Http\Controllers\HppController::class);
 

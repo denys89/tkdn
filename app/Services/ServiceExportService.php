@@ -11,6 +11,7 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\PageSetup;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Tcpdf;
 
 class ServiceExportService
 {
@@ -614,6 +615,110 @@ class ServiceExportService
                 'filepath' => $filepath ?? 'unknown',
                 'spreadsheet_valid' => $this->spreadsheet ? 'yes' : 'no',
                 'active_sheet' => $this->spreadsheet && $this->spreadsheet->getActiveSheet() ? 'yes' : 'no',
+            ]);
+
+            throw $e;
+        }
+    }
+
+    public function exportPdf(): string
+    {
+        try {
+            // Validate data before export
+            $this->validateData();
+
+            // Validate spreadsheet object
+            if (! $this->spreadsheet) {
+                throw new \Exception('Spreadsheet object tidak tersedia');
+            }
+
+            // Build worksheet content
+            $this->setupWorksheet();
+            $this->addHeaderInformation();
+            $this->addTableHeaders();
+            $this->addTableData();
+            $this->addSubTotal();
+            $this->formatWorksheet();
+
+            // Final validation before file generation
+            if (! $this->spreadsheet->getActiveSheet()) {
+                throw new \Exception('Worksheet tidak tersedia setelah setup');
+            }
+
+            return $this->generatePdfFile();
+        } catch (\Exception $e) {
+            Log::error('Failed to export TKDN form PDF', [
+                'service_id' => $this->service->id,
+                'classification' => $this->classification,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            throw new \Exception('Gagal membuat PDF TKDN: ' . $e->getMessage());
+        }
+    }
+
+    protected function generatePdfFile(): string
+    {
+        try {
+            // Increase memory limit for PDF generation
+            ini_set('memory_limit', '512M');
+            ini_set('max_execution_time', '300');
+            
+            if (! $this->spreadsheet || ! $this->spreadsheet->getActiveSheet()) {
+                throw new \Exception('Spreadsheet object tidak valid');
+            }
+
+            // Create TCPDF writer with optimized settings
+            $writer = new Tcpdf($this->spreadsheet);
+            
+            // Optimize PDF settings for better readability
+            $writer->setPreCalculateFormulas(false);
+            $writer->setIncludeCharts(false);
+            
+            // Configure PDF page settings using PhpSpreadsheet's TCPDF writer methods
+            $writer->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT);
+            $writer->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
+
+            $filename = 'TKDN_Service_' . $this->service->id . '_' . $this->classification . '_' . date('Y-m-d_H-i-s') . '.pdf';
+            $filepath = storage_path('app/public/exports/' . $filename);
+
+            // Ensure directory exists
+            if (! file_exists(dirname($filepath))) {
+                mkdir(dirname($filepath), 0755, true);
+            }
+
+            // Clean up any existing file
+            if (file_exists($filepath)) {
+                unlink($filepath);
+            }
+
+            // Save PDF
+            $writer->save($filepath);
+
+            // Verify file was created and is readable
+            if (! file_exists($filepath)) {
+                throw new \Exception('File PDF tidak dapat dibuat: ' . $filepath);
+            }
+            if (! is_readable($filepath)) {
+                throw new \Exception('File PDF tidak dapat dibaca: ' . $filepath);
+            }
+            $fileSize = filesize($filepath);
+            if ($fileSize === 0) {
+                throw new \Exception('File PDF kosong (0 bytes)');
+            }
+            // Verify file extension
+            $fileExtension = pathinfo($filepath, PATHINFO_EXTENSION);
+            if ($fileExtension !== 'pdf') {
+                throw new \Exception('File yang dihasilkan bukan file PDF (.pdf): ' . $fileExtension);
+            }
+
+            return $filepath;
+        } catch (\Exception $e) {
+            Log::error('Error generating PDF file: ' . $e->getMessage(), [
+                'service_id' => $this->service->id,
+                'classification' => $this->classification,
+                'filepath' => $filepath ?? 'unknown',
             ]);
 
             throw $e;

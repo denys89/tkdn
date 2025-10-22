@@ -1,13 +1,22 @@
-version: "3.8"
-
 services:
-  laravel:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: staging_tkdn
-    volumes:
-      - .:/var/www
-      - /var/www/vendor
+  mysql:
+    image: mysql:8.0
+    container_name: tkdn_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tkdn
+      MYSQL_USER: tkdn
+      MYSQL_PASSWORD: tkdn123
     ports:
-      - "80:8000"
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:

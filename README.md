@@ -373,3 +373,10 @@ AHS.PJ.EQ.PJ021.EQ009.EQ010.20241201143024
 - `coefficient` - Koefisien
 - `unit_price` - Harga satuan
 - `total_price` - Total harga item
+
+
+- Admin: admin@tkdn.com / password
+- Super Admin: superadmin@tkdn.com / password
+- Operator: operator@tkdn.com / password
+
+$2y$12$8qRqMkn0sn6sWYX7MYjZ5eBFCzuIZAiHBk/zF6MKso7PcFIxBxF9C

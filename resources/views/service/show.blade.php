@@ -1,4 +1,4 @@
-    @extends('layouts.app')
+@extends('layouts.app')
 
     @section('content')
 
@@ -186,6 +186,53 @@
                                 </div>
                             </div>
                         </div> -->
+                        @endif
+
+                        @if(in_array($service->status, ['generated', 'approved']))
+                        <!-- Secondary Actions - Export Forms -->
+                        <div class="mt-4">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-sm text-blue-100 font-medium">Export Forms:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <a href="{{ route('service.export.excel', ['service' => $service->id, 'classification' => '3.1']) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-white/20 hover:bg-white/30 border border-white/30 rounded-lg text-xs font-medium text-white transition-all duration-200 backdrop-blur-sm">
+                                        <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        Form 3.1
+                                    </a>
+                                    <a href="{{ route('service.export.excel', ['service' => $service->id, 'classification' => '3.2']) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-900/50 border border-green-200 dark:border-green-700 rounded-md text-xs font-medium text-green-700 dark:text-green-300 hover:text-green-800 dark:hover:text-green-200 transition-all duration-200">
+                                        <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                        </svg>
+                                        Form 3.2
+                                    </a>
+                                    <a href="{{ route('service.export.excel', ['service' => $service->id, 'classification' => '3.3']) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 border border-purple-200 dark:border-purple-700 rounded-md text-xs font-medium text-purple-700 dark:text-purple-300 hover:text-purple-800 dark:hover:text-purple-200 transition-all duration-200">
+                                        <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                        </svg>
+                                        Form 3.3
+                                    </a>
+                                    <a href="{{ route('service.export.excel', ['service' => $service->id, 'classification' => '3.4']) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-orange-100 hover:bg-orange-200 dark:bg-orange-900/30 dark:hover:bg-orange-900/50 border border-orange-200 dark:border-orange-700 rounded-md text-xs font-medium text-orange-700 dark:text-orange-300 hover:text-orange-800 dark:hover:text-orange-200 transition-all duration-200">
+                                        <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        Form 3.4
+                                    </a>
+                                    <a href="{{ route('service.export.excel', ['service' => $service->id, 'classification' => '3.5']) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 border border-indigo-200 dark:border-indigo-700 rounded-md text-xs font-medium text-indigo-700 dark:text-indigo-300 hover:text-indigo-800 dark:hover:text-indigo-200 transition-all duration-200">
+                                        <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                        </svg>
+                                        Form 3.5
+                                    </a>
+                                    <a href="{{ route('service.export.excel', ['service' => $service->id, 'classification' => 'all']) }}" target="_blank" class="inline-flex items-center px-3 py-1.5 bg-purple-500/30 hover:bg-purple-500/40 border border-purple-400/30 rounded-md text-xs font-medium text-purple-100 dark:text-purple-200 transition-all duration-200">
+                                        <svg class="w-3 h-3 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6l.586-.586a2 2 0 012.828 0L20 8m-6-6L16 4m-6 6l.586-.586a2 2 0 012.828 0L20 8m-6-6L16 4"></path>
+                                        </svg>
+                                        Export All
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         @endif
 
 
@@ -1001,6 +1048,12 @@
                                                 </svg>
                                                 Export Excel
                                             </a>
+                                            <a href="{{ route('service.export.pdf', ['service' => $service->id, 'classification' => '3.1']) }}" class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 border border-transparent rounded-lg text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 shadow-sm hover:shadow-md">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                                </svg>
+                                                Export PDF
+                                            </a>
                                         </div>
                                         @endif
                                     </div>
@@ -1208,6 +1261,12 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                                         </svg>
                                                         Export Excel
+                                                    </a>
+                                                    <a href="{{ route('service.export.pdf', ['service' => $service->id, 'classification' => '3.2']) }}" class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 border border-transparent rounded-lg text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 shadow-sm hover:shadow-md">
+                                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                                        </svg>
+                                                        Export PDF
                                                     </a>
                                                 </div>
                                             @endif
@@ -1429,6 +1488,12 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                                         </svg>
                                                         Export Excel
+                                                    </a>
+                                                    <a href="{{ route('service.export.pdf', ['service' => $service->id, 'classification' => '3.3']) }}" class="inline-flex items-center px-3 py-2 bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 border border-transparent rounded-lg text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all duration-200 shadow-sm hover:shadow-md">
+                                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                                        </svg>
+                                                        Export PDF
                                                     </a>
                                                 </div>
                                             @endif

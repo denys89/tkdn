@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Increase memory limit for PDF generation
+    php_value memory_limit 512M
+    php_value max_execution_time 300
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

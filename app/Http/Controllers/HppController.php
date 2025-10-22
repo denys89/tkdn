@@ -890,4 +890,76 @@ class HppController extends Controller
         }
     }
 
+    /**
+     * Export HPP data to Excel.
+     */
+    public function exportExcel(Hpp $hpp)
+    {
+        try {
+            $exporter = new \App\Services\HppExportService($hpp);
+            $filepath = $exporter->export();
+
+            $filename = basename($filepath);
+            $headers = [
+                'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            ];
+
+            // Basic validations
+            if (! file_exists($filepath)) {
+                throw new \Exception('File Excel tidak ditemukan setelah dibuat.');
+            }
+            if (! is_readable($filepath)) {
+                throw new \Exception('File Excel tidak dapat dibaca.');
+            }
+            if (filesize($filepath) === 0) {
+                throw new \Exception('File Excel kosong (0 bytes).');
+            }
+
+            return response()->download($filepath, $filename, $headers)->deleteFileAfterSend(true);
+        } catch (\Throwable $e) {
+            \Log::error('HPP Excel export failed', [
+                'hpp_id' => $hpp->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return back()->with('error', 'Gagal mengekspor Excel: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Export HPP data to PDF.
+     */
+    public function exportPdf(Hpp $hpp)
+    {
+        try {
+            $exporter = new \App\Services\HppExportService($hpp);
+            $filepath = $exporter->exportPdf();
+
+            $filename = basename($filepath);
+            $headers = [
+                'Content-Type' => 'application/pdf',
+            ];
+
+            // Basic validations
+            if (! file_exists($filepath)) {
+                throw new \Exception('File PDF tidak ditemukan setelah dibuat.');
+            }
+            if (! is_readable($filepath)) {
+                throw new \Exception('File PDF tidak dapat dibaca.');
+            }
+            if (filesize($filepath) === 0) {
+                throw new \Exception('File PDF kosong (0 bytes).');
+            }
+
+            return response()->download($filepath, $filename, $headers)->deleteFileAfterSend(true);
+        } catch (\Throwable $e) {
+            \Log::error('HPP PDF export failed', [
+                'hpp_id' => $hpp->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return back()->with('error', 'Gagal mengekspor PDF: ' . $e->getMessage());
+        }
+    }
+
 }
